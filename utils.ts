@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
 
-const jwtSecret = process.env.JWT_SECRET || "";
+const jwtSecret = `${process.env.JWT_SECRET}` || "";
 
 export interface JWTUserData {
     userId: ObjectId,
