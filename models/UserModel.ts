@@ -1,4 +1,6 @@
 export default interface UserModel{
     username: string,
-    hashedPassword: string
+    hashedPassword: string,
+    name: string,
+    email: string
 }

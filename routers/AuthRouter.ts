@@ -13,7 +13,7 @@ authRouter.get('/test', forceAuth, (req, res) => {
 
 // Register new user
 authRouter.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, name, email } = req.body;
 
     const existingUser = await UsersDb.getUserByUsername(username);
 
@@ -21,7 +21,7 @@ authRouter.post('/register', async (req, res) => {
         res.sendStatus(400)
     } else {
         const hashedPassword = hashPassword(password);
-        const user: UserModel = { username, hashedPassword };
+        const user: UserModel = { username, hashedPassword, name, email};
         const userId = await UsersDb.insertUser(user);
         
         res.send({ userId });
