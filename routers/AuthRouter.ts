@@ -18,7 +18,7 @@ authRouter.post('/register', async (req, res) => {
     const existingUser = await UsersDb.getUserByUsername(username);
 
     if (existingUser) {
-        res.sendStatus(400)
+        res.status(400).send("User already exists");
     } else {
         const hashedPassword = hashPassword(password);
         const user: UserModel = { username, hashedPassword, name, email};
@@ -40,12 +40,12 @@ authRouter.post('/login', async (req, res) => {
 
         if (correctPass) {
             const jwt = getJWT(username, user._id);
-            res.send(jwt);
+            res.send({token: jwt, username: user.username});
         } else {
-            res.sendStatus(400);
+            res.send("Wrong Password");
         }
     } else {
-        res.sendStatus(400);
+        res.send("User don't exist");
     }
 });
 

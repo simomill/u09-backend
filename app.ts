@@ -4,6 +4,7 @@ import { authUser } from "./middelwares";
 import authRouter from './routers/AuthRouter';
 import morgan from 'morgan';
 import cors from 'cors';
+import usersRouter from "./routers/UserRouter";
 
 // APP AND MIDDLEWARE SETUP
 const app = express();
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRouter);
+app.use('/users', usersRouter);
 
 const server_port = process.env.PORT || 3000;
 

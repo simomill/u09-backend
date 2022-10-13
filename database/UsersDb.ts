@@ -27,6 +27,15 @@ export const UsersDb = {
 
         return user;
     },
+    
+    // GET ALL USERS
+    async getUsers() {
+        const collection = await getCollection();
+
+        const users = collection.find();
+
+        return users.toArray();
+    },
 
 
 }
