@@ -1,3 +1,4 @@
+import { UploadedFile } from "express-fileupload";
 import UserModel from "../models/UserModel";
 import { getDb } from "./MongoDb";
 
@@ -36,6 +37,14 @@ export const UsersDb = {
 
         return users.toArray();
     },
+
+    async addImage(image: UploadedFile, username: string) {
+        const collection = await getCollection();
+
+        const user = collection.updateOne({ username }, { image });
+        
+        return user
+    }
 
 
 }
