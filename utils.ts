@@ -40,3 +40,16 @@ export function verifyDecodeJWT(token: string) {
         return false
     }
 }
+
+
+
+
+// FILEUPLOAD
+
+export function getUniqueFilename(filename: any) {
+    const timestamp = Date.now();
+
+    const extension = filename.toString().split(".").pop();
+
+    return `${timestamp}.${extension}`;
+}
