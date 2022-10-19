@@ -49,26 +49,6 @@ authRouter.post('/login', async (req, res) => {
     }
 });
 
-// LOGOUT W/ EXISTING USER
-authRouter.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    const user = await UsersDb.getUserByUsername(username);
-
-    if (user) {
-        const correctPass = comparePassword(password, user.hashedPassword);
-
-        if (correctPass) {
-            const jwt = getJWT(username, user._id);
-            res.send(jwt);
-        } else {
-            res.sendStatus(400);
-        }
-    } else {
-        res.sendStatus(400);
-    }
-});
-
 
 
 export default authRouter;
