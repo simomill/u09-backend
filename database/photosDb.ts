@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import PhotoModel from "../models/PhotoModel";
 import UserModel from "../models/UserModel";
 import { getDb } from "./MongoDb";
@@ -45,6 +46,19 @@ export const PhotosDb = {
         const result = await collection.insertOne(photo);
 
         return result.insertedId;
+    },
+
+    async deleteImageById(id: ObjectId) {
+        const collection = await getCollection();
+
+        try {
+            const result = await collection.findOneAndDelete({ _id: id });
+
+            return "Image successfully removed"
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
