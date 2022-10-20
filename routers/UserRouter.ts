@@ -70,7 +70,7 @@ usersRouter.post("/upload", upload.single("image"), (req, res) => {
                 console.log(err.message);
                 return; 
             }
-            console.log("file deleted successfully");
+            console.log("file uploaded successfully");
         }) 
     }  
 });
