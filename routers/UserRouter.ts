@@ -75,5 +75,12 @@ usersRouter.post("/upload", upload.single("image"), (req, res) => {
     }  
 });
 
+usersRouter.delete('/photos/:id', async (req, res) => {
+    const photoId = new ObjectId(req.params.id);
+
+    const result = await PhotosDb.deleteImageById(photoId);
+
+    console.log(result);
+})
 
 export default usersRouter;
