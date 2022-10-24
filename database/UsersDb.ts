@@ -44,7 +44,13 @@ export const UsersDb = {
         const user = collection.updateOne({ username }, { image });
         
         return user
+    },
+
+    async removeUser(userName: string) {
+        const collection = await getCollection();
+
+        const result = await collection.findOneAndDelete({ username: userName });
+
+        return result;
     }
-
-
 }

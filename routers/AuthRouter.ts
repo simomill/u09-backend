@@ -14,6 +14,7 @@ authRouter.get('/test', forceAuth, (req, res) => {
 // Register new user
 authRouter.post('/register', async (req, res) => {
     const { username, password, name, email } = req.body;
+    const isAdmin = false;
 
     const existingUser = await UsersDb.getUserByUsername(username);
 
@@ -21,7 +22,7 @@ authRouter.post('/register', async (req, res) => {
         res.status(400).send("User already exists");
     } else {
         const hashedPassword = hashPassword(password);
-        const user: UserModel = { username, hashedPassword, name, email};
+        const user: UserModel = { username, hashedPassword, name, email, isAdmin};
         const userId = await UsersDb.insertUser(user);
         
         res.send({ userId });
@@ -40,7 +41,7 @@ authRouter.post('/login', async (req, res) => {
 
         if (correctPass) {
             const jwt = getJWT(username, user._id);
-            res.send({token: jwt, username: user.username});
+            res.send({token: jwt, username: user.username, isAdmin: user.isAdmin});
         } else {
             res.send("Wrong Password");
         }
