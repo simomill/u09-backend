@@ -24,14 +24,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// get all users
+// GET ALL USERS
 usersRouter.get("/", async (req, res) => {
     const result = await UsersDb.getUsers();
 
     res.send(result);
 });
 
-// get one user
+// GET ALL PHOTOS
+usersRouter.get("/photos", async (req, res) => {
+    const result = await PhotosDb.getPhotos();
+    
+
+    res.send(result);
+});
+
+// GET ONE USER BY USERNAME
 usersRouter.get("/:name", async (req, res) => {
     const username = req.params.name;
 
@@ -59,16 +67,15 @@ usersRouter.delete("/:username", async (req, res) => {
 });
 
 
-
-
-
 //  GET ONE USERS PHOTOS
 usersRouter.get("/photos/:name", async (req, res) => {
     const result = await PhotosDb.getPhotosByUser(req.params.name);
-
+    
     res.send(result);
-})
+});
 
+
+// UPLOAD NEW PHOTO
 usersRouter.post("/upload", upload.single("image"), (req, res) => {
     // const img = fs.readFileSync(req.file.path);
     const image = req.file;    
