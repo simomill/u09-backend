@@ -40,6 +40,29 @@ usersRouter.get("/:name", async (req, res) => {
     res.send(result);
 });
 
+// DELETE PHOTO BY ID
+usersRouter.delete('/photos/:id', async (req, res) => {
+    const photoId = new ObjectId(req.params.id);
+
+    const result = await PhotosDb.deleteImageById(photoId);
+
+    console.log(result);
+})
+
+// DELETE USER BY ID
+usersRouter.delete("/:username", async (req, res) => {
+    const userName = req.params.username;
+
+    const result = await UsersDb.removeUser(userName);
+
+    res.send(result);
+});
+
+
+
+
+
+//  GET ONE USERS PHOTOS
 usersRouter.get("/photos/:name", async (req, res) => {
     const result = await PhotosDb.getPhotosByUser(req.params.name);
 
@@ -75,12 +98,6 @@ usersRouter.post("/upload", upload.single("image"), (req, res) => {
     }  
 });
 
-usersRouter.delete('/photos/:id', async (req, res) => {
-    const photoId = new ObjectId(req.params.id);
 
-    const result = await PhotosDb.deleteImageById(photoId);
-
-    console.log(result);
-})
 
 export default usersRouter;
