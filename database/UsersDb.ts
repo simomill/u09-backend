@@ -1,4 +1,5 @@
 import { UploadedFile } from "express-fileupload";
+import { ObjectId } from "mongodb";
 import UserModel from "../models/UserModel";
 import { getDb } from "./MongoDb";
 
@@ -8,6 +9,12 @@ async function getCollection() {
     const db = await getDb();
     const collection = db.collection<UserModel>(COLLECTION_NAME);
     return collection;
+}
+
+export interface updateData {
+    name?: string;
+    username?: string;
+    email?: string;
 }
 
 export const UsersDb = {
@@ -28,7 +35,7 @@ export const UsersDb = {
 
         return user;
     },
-    
+
     // GET ALL USERS
     async getUsers() {
         const collection = await getCollection();
@@ -42,15 +49,42 @@ export const UsersDb = {
         const collection = await getCollection();
 
         const user = collection.updateOne({ username }, { image });
-        
-        return user
+
+        return user;
     },
 
     async removeUser(userName: string) {
         const collection = await getCollection();
 
-        const result = await collection.findOneAndDelete({ username: userName });
+        const result = await collection.findOneAndDelete({
+            username: userName,
+        });
 
         return result;
-    }
-}
+    },
+
+    async updateUser(userId: ObjectId, data: updateData) {
+        const collection = await getCollection();
+        console.log(data);
+        
+
+        try {
+            const result = await collection.findOneAndUpdate(
+                { _id: userId },
+                {
+                    $set: {
+                        name: data.name,
+                        username: data.username,
+                        email: data.email,
+                    },
+                },
+                { returnDocument: "after" },
+               
+            );
+
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+};
