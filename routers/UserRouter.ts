@@ -48,6 +48,16 @@ usersRouter.get("/:name", async (req, res) => {
     res.send(result);
 });
 
+usersRouter.put('/:id', async (req, res) => {
+    const userId = new ObjectId(req.params.id);
+    const data = req.body;
+
+    const result = await UsersDb.updateUser(userId, data);
+
+    res.send(result);
+    
+})
+
 // DELETE PHOTO BY ID
 usersRouter.delete('/photos/:id', async (req, res) => {
     const photoId = new ObjectId(req.params.id);
