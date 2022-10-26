@@ -14,7 +14,7 @@ authRouter.get('/test', forceAuth, (req, res) => {
 // Register new user
 authRouter.post('/register', async (req, res) => {
     const { username, password, name, email } = req.body;
-    const isAdmin = false;
+    const isAdmin = 0;
 
     const existingUser = await UsersDb.getUserByUsername(username);
 
