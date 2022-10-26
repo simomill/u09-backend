@@ -3,5 +3,5 @@ export default interface UserModel{
     hashedPassword: string,
     name: string,
     email: string,
-    isAdmin: boolean
+    isAdmin: number
 }

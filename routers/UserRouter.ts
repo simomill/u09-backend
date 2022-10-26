@@ -48,6 +48,7 @@ usersRouter.get("/:name", async (req, res) => {
     res.send(result);
 });
 
+// UPDATE USER BY ID
 usersRouter.put('/:id', async (req, res) => {
     const userId = new ObjectId(req.params.id);
     const data = req.body;
@@ -57,6 +58,19 @@ usersRouter.put('/:id', async (req, res) => {
     res.send(result);
     
 })
+
+// UPDATE USER-ROLE BY ID
+usersRouter.put('/:id/role', async (req, res) => {
+    const userId = new ObjectId(req.params.id);
+
+    const currentRole = req.body.isAdmin;    
+
+    const newRole = currentRole === 0 ? 1 : 0;
+    
+    const result = await UsersDb.changeRole(userId, newRole);
+    
+    res.send(result);
+}) 
 
 // DELETE PHOTO BY ID
 usersRouter.delete('/photos/:id', async (req, res) => {

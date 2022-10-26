@@ -45,6 +45,7 @@ export const UsersDb = {
         return users.toArray();
     },
 
+    // NOT YET CREATED
     async addImage(image: UploadedFile, username: string) {
         const collection = await getCollection();
 
@@ -53,6 +54,7 @@ export const UsersDb = {
         return user;
     },
 
+    // REMOVE USER WITH USERNAME
     async removeUser(userName: string) {
         const collection = await getCollection();
 
@@ -63,10 +65,10 @@ export const UsersDb = {
         return result;
     },
 
+    // UPDATE USER WITH ID
     async updateUser(userId: ObjectId, data: updateData) {
         const collection = await getCollection();
         console.log(data);
-        
 
         try {
             const result = await collection.findOneAndUpdate(
@@ -78,11 +80,30 @@ export const UsersDb = {
                         email: data.email,
                     },
                 },
-                { returnDocument: "after" },
-               
+                { returnDocument: "after" }
             );
 
             return result;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    // CHANGE USER ROLE BY ID
+    async changeRole(userId: ObjectId, newRole: number) {
+        const collection = await getCollection();
+
+        try {
+            const result = collection.findOneAndUpdate(
+                { _id: userId },
+                {
+                    $set: { isAdmin: newRole },
+                },
+                { returnDocument: "after" }
+            );
+
+            return result;
+
         } catch (error) {
             console.log(error);
         }
