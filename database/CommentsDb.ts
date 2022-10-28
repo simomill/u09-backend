@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import CommentModel from "../models/CommentModel";
 import { getDb } from "./MongoDb";
 
@@ -24,6 +25,15 @@ export const CommentsDb = {
         const result = await collection.insertOne(comment);
 
         return result.insertedId;
+    },
+
+    // DELETE COMMENT BY ID
+    async deleteComment(commentId: ObjectId) {
+        const collection = await getCollection();
+
+        const result = await collection.findOneAndDelete({_id: commentId});
+
+        return result;
     }
 };
 
