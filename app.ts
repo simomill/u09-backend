@@ -12,6 +12,7 @@ import usersRouter from "./routers/UserRouter";
 import Grid from "gridfs-stream";
 import methodOverride from "method-override";
 import bodyParser from "body-parser";
+import commentsRouter from "./routers/CommentsRouter";
 
 // APP AND MIDDLEWARE SETUP
 const app = express();
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/comments', commentsRouter);
 
 const server_port = process.env.PORT || 3000;
 
