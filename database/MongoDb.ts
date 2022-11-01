@@ -1,6 +1,6 @@
-const mongo = require('mongodb');
+import mongo from 'mongodb';
 import Grid from 'gridfs-stream';
-import { MongoClient } from '../node_modules/mongodb/mongodb';
+import { MongoClient } from 'mongodb';
 
 export async function getDb() {
     const connectionString = process.env.MONGO_CONNECTION_STRING ?? ""
