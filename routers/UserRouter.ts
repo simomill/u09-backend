@@ -11,6 +11,7 @@ import PhotoModel from "../models/PhotoModel";
 import { PhotosDb } from "../database/photosDb";
 import bodyParser from "body-parser";
 import imageToBase64 from "image-to-base64";
+import { getDb } from "../database/MongoDb";
 
 const usersRouter = Router();
 
@@ -32,6 +33,20 @@ usersRouter.get("/", async (req, res) => {
             res.send(result)
         } else {
             res.send("error: couldnt get users")
+        }
+
+    } catch (error) {
+        res.send(error);
+    }
+});
+usersRouter.get("/conn", async (req, res) => {
+    try {
+        const result = await getDb();
+              
+        if (result) {
+            res.send(result)
+        } else {
+            res.send("error: couldnt get db")
         }
 
     } catch (error) {

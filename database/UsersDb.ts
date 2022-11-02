@@ -42,8 +42,7 @@ export const UsersDb = {
 
         const users = collection.find();
 
-        // return users.toArray();
-        return collection.collectionName;
+        return users.toArray;
     },
 
     // NOT YET CREATED
