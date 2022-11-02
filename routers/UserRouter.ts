@@ -31,30 +31,30 @@ usersRouter.get("/", async (req, res) => {
         const result = await UsersDb.getUsers();
               
         if (result) {
-            res.send(result)
+            res.send({result})
         } else {
             res.send("error: couldnt get users")
         }
 
     } catch (error) {
-        res.send(error);
+        res.send({error});
     }
 });
 
-usersRouter.get("/conn", async (req, res) => {
-    try {
-        const result = await getCollections();
+// usersRouter.get("/conn", async (req, res) => {
+//     try {
+//         const response = await getCollections();
               
-        if (result) {
-            res.send(result)
-        } else {
-            res.send("error: couldnt get collections")
-        }
+//         if (response) {
+//             res.send(result)
+//         } else {
+//             res.send("error: couldnt get collections")
+//         }
 
-    } catch (error) {
-        res.send(error);
-    }
-});
+//     } catch (error) {
+//         res.send({error});
+//     }
+// });
 
 // GET ALL PHOTOS
 usersRouter.get("/photos", async (req, res) => {
