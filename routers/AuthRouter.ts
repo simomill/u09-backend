@@ -23,9 +23,15 @@ authRouter.post('/register', async (req, res) => {
     } else {
         const hashedPassword = hashPassword(password);
         const user: UserModel = { username, hashedPassword, name, email, isAdmin};
-        const userId = await UsersDb.insertUser(user);
         
-        res.send({ userId });
+        try {
+            const userId = await UsersDb.insertUser(user);
+            res.status(200).send({ userId });
+        } catch (error) {
+            res.status(400).send(error);
+            console.log(error);
+        }
+        
     }
 });
 
@@ -41,12 +47,12 @@ authRouter.post('/login', async (req, res) => {
 
         if (correctPass) {
             const jwt = getJWT(username, user._id);
-            res.send({token: jwt, username: user.username, isAdmin: user.isAdmin});
+            res.status(200).send({token: jwt, username: user.username, isAdmin: user.isAdmin});
         } else {
-            res.send("Wrong Password");
+            res.status(401).send("Wrong Password");
         }
     } else {
-        res.send("User don't exist");
+        res.status(400).send("User don't exist");
     }
 });
 
