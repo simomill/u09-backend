@@ -39,6 +39,7 @@ usersRouter.get("/", async (req, res) => {
         res.send(error);
     }
 });
+
 usersRouter.get("/conn", async (req, res) => {
     try {
         const result = await getDb();
