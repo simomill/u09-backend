@@ -26,12 +26,13 @@ const upload = multer({ storage: storage });
 // GET ALL USERS
 usersRouter.get("/", async (req, res) => {
     try {
-        const result = await UsersDb.getUsers().then(() => {
-            console.log(result);
-            res.status(200).send(result);
-        });
+        const result = await UsersDb.getUsers();
+            
+        console.log(result);    
+        res.send(result);
+
     } catch (error) {
-        res.status(400).send(error);
+        res.send(error);
     }
 });
 
