@@ -29,7 +29,7 @@ usersRouter.get("/", async (req, res) => {
         const result = await UsersDb.getUsers();
             
         console.log(result);    
-        res.send(result);
+        res.send("hello");
 
     } catch (error) {
         res.send(error);
