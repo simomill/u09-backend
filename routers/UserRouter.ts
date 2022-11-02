@@ -27,9 +27,12 @@ const upload = multer({ storage: storage });
 usersRouter.get("/", async (req, res) => {
     try {
         const result = await UsersDb.getUsers();
-            
-        console.log(result);    
-        res.send("hello");
+              
+        if (result) {
+            res.send(result)
+        } else {
+            res.send("error: couldnt get users")
+        }
 
     } catch (error) {
         res.send(error);
