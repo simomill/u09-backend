@@ -12,7 +12,7 @@ authRouter.get('/test', forceAuth, (req, res) => {
 })
 
 // Register new user
-authRouter.post('/register', async (req, res) => {
+authRouter.post('/register', async (req, res, next) => {
     const { username, password, name, email } = req.body;
     const isAdmin = 0;
 
@@ -26,12 +26,13 @@ authRouter.post('/register', async (req, res) => {
         const userId = await UsersDb.insertUser(user);
         
         res.send({ userId });
+        next();
     }
 });
 
 
 // LOGIN W/ EXISTING USER
-authRouter.post('/login', async (req, res) => {
+authRouter.post('/login', async (req, res, next) => {
     const { username, password } = req.body;
 
     const user = await UsersDb.getUserByUsername(username);
@@ -44,9 +45,12 @@ authRouter.post('/login', async (req, res) => {
             res.send({token: jwt, username: user.username, isAdmin: user.isAdmin});
         } else {
             res.send("Wrong Password");
+            next();
+
         }
     } else {
         res.send("User don't exist");
+        next();
     }
 });
 
