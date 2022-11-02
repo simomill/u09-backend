@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import { UploadedFile } from "express-fileupload";
 import { ObjectId } from "mongodb";
-import { UsersDb } from "../database/UsersDb";
+import { getCollections, UsersDb } from "../database/UsersDb";
 import { addTest } from "../UserData";
 import { getUniqueFilename } from "../utils";
 import multer from "multer";
@@ -12,6 +12,7 @@ import { PhotosDb } from "../database/photosDb";
 import bodyParser from "body-parser";
 import imageToBase64 from "image-to-base64";
 import { getDb } from "../database/MongoDb";
+import { Collection } from "mongoose";
 
 const usersRouter = Router();
 
@@ -42,12 +43,12 @@ usersRouter.get("/", async (req, res) => {
 
 usersRouter.get("/conn", async (req, res) => {
     try {
-        const result = await getDb();
+        const result = await getCollections();
               
         if (result) {
             res.send(result)
         } else {
-            res.send("error: couldnt get db")
+            res.send("error: couldnt get collections")
         }
 
     } catch (error) {
