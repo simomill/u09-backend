@@ -27,18 +27,10 @@ const upload = multer({ storage: storage });
 
 // GET ALL USERS
 usersRouter.get("/", async (req, res) => {
-    try {
-        const result = await UsersDb.getUsers();
-              
-        if (result) {
-            res.send({result})
-        } else {
-            res.send("error: couldnt get users")
-        }
+    const result = await UsersDb.getUsers();
 
-    } catch (error) {
-        res.send({error});
-    }
+    if (result) res.status(200).send(result);
+
 });
 
 // usersRouter.get("/conn", async (req, res) => {
@@ -58,28 +50,18 @@ usersRouter.get("/", async (req, res) => {
 
 // GET ALL PHOTOS
 usersRouter.get("/photos", async (req, res) => {
-    try {
-        const result = await PhotosDb.getPhotos().then(() => {
-            console.log(result);
-            res.status(200).send(result);
-        });
-    } catch (error) {
-        res.status(400).send(error);
-    }
+    const result = await PhotosDb.getPhotos();
+
+    if (result) res.status(200).send(result);
 });
 
 // GET ONE USER BY USERNAME
 usersRouter.get("/:name", async (req, res) => {
     const username = req.params.name;
 
-    try {
-        const result = await UsersDb.getUserByUsername(username).then(() => {
-            console.log(result);
-            res.status(200).send(result);
-        });
-    } catch (error) {
-        res.status(400).send(error);
-    }
+    const result = await UsersDb.getUserByUsername(username);
+
+    if (result) res.status(200).send(result);
 });
 
 // UPDATE USER BY ID
@@ -87,14 +69,9 @@ usersRouter.put("/:id", async (req, res) => {
     const userId = new ObjectId(req.params.id);
     const data = req.body;
 
-    try {
-        const result = await UsersDb.updateUser(userId, data).then(() => {
-            console.log(result);
-            res.status(200).send(result);
-        });
-    } catch (error) {
-        res.status(400).send(error);
-    }
+    const result = await UsersDb.updateUser(userId, data);
+
+    if (result) res.status(200).send(result);
 });
 
 // UPDATE USER-ROLE BY ID
@@ -105,13 +82,11 @@ usersRouter.put("/:id/role", async (req, res) => {
 
     const newRole = currentRole === 0 ? 1 : 0;
 
-    try {
-        const result = await UsersDb.changeRole(userId, newRole).then(() => {
-            console.log(result);
-            res.status(200).send(result);
-        });
-    } catch (error) {
-        res.status(400).send(error);
+    const result = await UsersDb.changeRole(userId, newRole);
+
+    if (result) {
+        console.log(result);
+        res.status(200).send(result);
     }
 });
 
@@ -144,22 +119,17 @@ usersRouter.delete("/:username", async (req, res) => {
 
 //  GET ONE USERS PHOTOS
 usersRouter.get("/photos/:name", async (req, res) => {
-    try {
-        const result = await PhotosDb.getPhotosByUser(req.params.name).then(
-            () => {
-                res.status(200).send(result);
-            }
-        );
-    } catch (error) {
-        res.status(400).send(error);
+    const result = await PhotosDb.getPhotosByUser(req.params.name);
+
+    if (result) {
+        res.status(200).send(result);
     }
 });
 
 // UPLOAD NEW PHOTO
-usersRouter.post("/upload", upload.single("image"), (req, res) => {
-    // const img = fs.readFileSync(req.file.path);
+usersRouter.post("/upload", upload.single("image"), async (req, res) => {
     const image = req.file;
-    res.send(image);
+
     if (image) {
         const upload_img: PhotoModel = {
             username: req.body.username,
@@ -171,24 +141,20 @@ usersRouter.post("/upload", upload.single("image"), (req, res) => {
             },
         };
 
-        try {
-            PhotosDb.addPhoto(upload_img).then(() => {
-                fs.rm(
-                    "Public/Uploads/" + image.filename,
-                    { recursive: true },
-                    (err) => {
-                        if (err) {
-                            console.log(err.message);
-                            return;
-                        }
-                    }
-                );
+        const result = await PhotosDb.addPhoto(upload_img);
 
-                res.status(200).send("file uploaded successfully");
-            });
-        } catch (error) {
-            res.status(400).send(error);
-        }
+        fs.rm(
+            "Public/Uploads/" + image.filename,
+            { recursive: true },
+            (err) => {
+                if (err) {
+                    console.log(err.message);
+                    return;
+                }
+            }
+        );
+
+        res.status(200).send("file uploaded successfully");
     }
 });
 

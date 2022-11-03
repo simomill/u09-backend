@@ -19,7 +19,7 @@ authRouter.post('/register', async (req, res, next) => {
     const existingUser = await UsersDb.getUserByUsername(username);
 
     if (existingUser) {
-        res.status(400).send("User already exists");
+        res.status(400).send(existingUser);
     } else {
         const hashedPassword = hashPassword(password);
         const user: UserModel = { username, hashedPassword, name, email, isAdmin};
