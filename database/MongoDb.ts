@@ -11,11 +11,8 @@ export async function getDb() {
 
     const client = new MongoClient(connectionString);
     
-    try {
-        await client.connect();
-    } catch (error) {
-        console.log(error); 
-    }
+    
+    await client.connect();
     
     const db = client.db(process.env.MONGO_DB_NAME);
 

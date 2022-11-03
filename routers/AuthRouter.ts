@@ -7,8 +7,8 @@ import {comparePassword, getJWT, hashPassword} from '../utils'
 const authRouter = Router();
 
 // FORCE LOGIN & SHOW USERNAME
-authRouter.get('/test', forceAuth, (req, res) => {
-    res.send(`Hello user: ${res.locals.user.username}`);
+authRouter.get('/test', (req, res) => {
+    res.send(`CONN_STRING: ${process.env.MONGO_CONNECTION_STRING}`);
 })
 
 // Register new user
