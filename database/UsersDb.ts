@@ -42,7 +42,7 @@ export const UsersDb = {
 
         const users = collection.find();
 
-        return users.toArray();
+        return users;
     },
 
     // NOT YET CREATED
