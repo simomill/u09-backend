@@ -7,13 +7,9 @@ const commentsRouter = Router();
 
 // GET ALL COMMENTS
 commentsRouter.get("/", async (req, res) => {
-    try {
-        const result = await CommentsDb.getComments().then(() => {
-        res.status(200).send(result);
-    });
-    } catch (error) {
-        res.status(400).send(error);
-    } 
+    const result = await CommentsDb.getComments();
+
+    if (result) res.status(200).send(result);
 });
 
 // POST NEW COMMENT
@@ -22,29 +18,18 @@ commentsRouter.post("/", async (req, res) => {
 
     const comment: CommentModel = { message, photoId, username };
 
-    try {
-        const commentId = await CommentsDb.insertComment(comment).then(() => {
-            res.status(200).send({ commentId });
-        })
-    } catch (error) {
-        res.status(400).send(error);
-    }
-    
+    const result = await CommentsDb.insertComment(comment);
+
+    if (result) res.status(200).send({ result });
 });
 
 // DELETE COMMENT
-commentsRouter.delete('/:id', async (req, res) => {
+commentsRouter.delete("/:id", async (req, res) => {
     const commentId = new ObjectId(req.params.id);
 
-    try {
-        const response = await CommentsDb.deleteComment(commentId).then(() => {
-           res.status(200).send(response); 
-        });
-        
-    } catch (error) {
-        res.status(400).send(error)
-    }
-    
+    const result = await CommentsDb.deleteComment(commentId);
+
+    if (result) res.status(200).send(result);
 });
 
 export default commentsRouter;

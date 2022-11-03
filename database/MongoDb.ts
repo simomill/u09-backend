@@ -4,8 +4,6 @@ import { MongoClient } from 'mongodb';
 
 export async function getDb() {
     const connectionString = process.env.MONGO_CONNECTION_STRING ?? ""
-
-    console.log(connectionString);
     
     if (connectionString.length === 0) {
         throw new Error("Invalid connection string")
@@ -20,8 +18,6 @@ export async function getDb() {
     }
     
     const db = client.db(process.env.MONGO_DB_NAME);
-
-    const gfs = Grid(db, mongo)
 
     return db;
 }
