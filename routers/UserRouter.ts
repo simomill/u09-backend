@@ -25,29 +25,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// GET ALL USERS
-usersRouter.get("/", async (req, res) => {
-    const result = await UsersDb.getUsers();
-
-    if (result) res.status(200).send(result);
-
-});
-
-// usersRouter.get("/conn", async (req, res) => {
-//     try {
-//         const response = await getCollections();
-              
-//         if (response) {
-//             res.send(result)
-//         } else {
-//             res.send("error: couldnt get collections")
-//         }
-
-//     } catch (error) {
-//         res.send({error});
-//     }
-// });
-
 // GET ALL PHOTOS
 usersRouter.get("/photos", async (req, res) => {
     const result = await PhotosDb.getPhotos();
@@ -63,6 +40,15 @@ usersRouter.get("/:name", async (req, res) => {
 
     if (result) res.status(200).send(result);
 });
+
+
+// GET ALL USERS
+usersRouter.get("/", async (req, res) => {
+    const result = await UsersDb.getUsers();
+
+    if (result) res.status(200).send(result);
+});
+
 
 // UPDATE USER BY ID
 usersRouter.put("/:id", async (req, res) => {
