@@ -47,11 +47,7 @@ export const UsersDb = {
 
         const users = collection.find();
 
-        // return users.toArray;
-
-        if (collection) {
-            return collection.collectionName;
-        }
+        return users.toArray;
         
     },
 
