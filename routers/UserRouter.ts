@@ -25,6 +25,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// GET ALL USERS
+usersRouter.get("/all", async (req, res) => {
+    const result = await UsersDb.getUsers();
+
+    if (result) res.status(200).send(result);
+});
+
 // GET ALL PHOTOS
 usersRouter.get("/photos", async (req, res) => {
     const result = await PhotosDb.getPhotos();
@@ -42,12 +49,7 @@ usersRouter.get("/:name", async (req, res) => {
 });
 
 
-// GET ALL USERS
-usersRouter.get("/", async (req, res) => {
-    const result = await UsersDb.getUsers();
 
-    if (result) res.status(200).send(result);
-});
 
 
 // UPDATE USER BY ID
