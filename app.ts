@@ -19,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true, limit:'10mb' }));
-// app.use(authUser);
+app.use(authUser);
 
 app.get('/', (req, res) => {
     console.log(res.locals.user);
