@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import Photo, { PhotoInterface } from "../models/PhotoModel";
 import PhotoModel from "../models/PhotoModel";
 import UserModel from "../models/UserModel";
 import { getDb } from "./MongoDb";
@@ -7,57 +8,47 @@ const COLLECTION_NAME = "photos";
 
 async function getCollection() {
     const db = await getDb();
-    const collection = db.collection<PhotoModel>(COLLECTION_NAME);
+    const collection = db.collection<PhotoInterface>(COLLECTION_NAME);
     return collection;
 }
 
 export const PhotosDb = {
     // Get all photos
     async getPhotos() {
-        const collection = await getCollection();
+        const photos = Photo.find({});
 
-        const photos = collection.find();
-
-        return photos.toArray();
+        return photos;
     },
 
     // Get all photos by user X
-    async getPhotosByUser(username: string) {
-        const collection = await getCollection();
+    async getPhotosByUser(username: string) {    
+        const photos = Photo.find({ username });
     
-        const photos = collection.find({ username });
-    
-        return photos.toArray();
+        return photos;
     },
 
     // Get specific photo
-    async getPhoto(photoId: string) {
-        const collection = await getCollection();
-    
-        const photo = collection.findOne({ photoId });
+    async getPhoto(photoId: string) {    
+        const photo = Photo.findOne({ _id: photoId });
     
         return photo;
     },
 
     // Save new photo
-    async addPhoto(photo: PhotoModel) {
-        const collection = await getCollection();
-        
-        const result = await collection.insertOne(photo);
+    async addPhoto(photo: PhotoInterface) {        
+        const result = await Photo.create(photo);
 
-        return result.insertedId;
+        return result;
     },
 
     async deleteImageById(id: ObjectId) {
-        const collection = await getCollection();
-
         try {
-            const result = await collection.findOneAndDelete({ _id: id });
+            const result = await Photo.findOneAndDelete({ _id: id });
 
             return "Image successfully removed"
 
         } catch (error) {
-            console.log(error);
+            return console.log(error);
         }
     }
 }
