@@ -1,29 +1,36 @@
-import { Router } from 'express';
-import { UsersDb } from '../database/UsersDb';
-import { forceAuth } from '../middelwares';
-import UserModel from '../models/UserModel';
-import {comparePassword, getJWT, hashPassword} from '../utils'
+import { Router } from "express";
+import { UsersDb } from "../database/UsersDb";
+import { forceAuth } from "../middelwares";
+import UserModel, { UserInterface } from "../models/UserModel";
+import { comparePassword, getJWT, hashPassword } from "../utils";
 
 const authRouter = Router();
 
 // FORCE LOGIN & SHOW USERNAME
-authRouter.get('/test', (req, res) => {
+authRouter.get("/test", (req, res) => {
     res.send(`CONN_STRING: ${process.env.MONGO_CONNECTION_STRING}`);
-})
+});
 
 // Register new user
-authRouter.post('/register', async (req, res, next) => {
+authRouter.post("/register", async (req, res) => {
     const { username, password, name, email } = req.body;
     const isAdmin = 0;
 
-    const existingUser = await UsersDb.getUserByUsername(username);
+    const existingUser = (await UsersDb.getUserByUsername(username))
+        ? await UsersDb.getUserByEmail(email)
+        : false;
 
     if (existingUser) {
         res.status(400).send(existingUser);
     } else {
         const hashedPassword = hashPassword(password);
-        const user: UserModel = { username, hashedPassword, name, email, isAdmin};
-        
+        const user: UserInterface = {
+            username,
+            hashedPassword,
+            name,
+            email,
+            isAdmin,
+        };
 
         try {
             const userId = await UsersDb.insertUser(user);
@@ -35,9 +42,8 @@ authRouter.post('/register', async (req, res, next) => {
     }
 });
 
-
 // LOGIN W/ EXISTING USER
-authRouter.post('/login', async (req, res, next) => {
+authRouter.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
 
     const user = await UsersDb.getUserByUsername(username);
@@ -47,7 +53,11 @@ authRouter.post('/login', async (req, res, next) => {
 
         if (correctPass) {
             const jwt = getJWT(username, user._id);
-            res.status(200).send({token: jwt, username: user.username, isAdmin: user.isAdmin});
+            res.status(200).send({
+                token: jwt,
+                username: user.username,
+                isAdmin: user.isAdmin,
+            });
         } else {
             res.status(401).send("Wrong Password");
         }
@@ -55,7 +65,5 @@ authRouter.post('/login', async (req, res, next) => {
         res.status(400).send("User don't exist");
     }
 });
-
-
 
 export default authRouter;

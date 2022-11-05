@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Long, ObjectId, Timestamp } from "mongodb";
 import { CommentsDb } from "../database/CommentsDb";
-import CommentModel from "../models/CommentModel";
+import CommentModel, { CommentInterface } from "../models/CommentModel";
 
 const commentsRouter = Router();
 
@@ -16,7 +16,7 @@ commentsRouter.get("/", async (req, res) => {
 commentsRouter.post("/", async (req, res) => {
     const { message, photoId, username } = req.body;
 
-    const comment: CommentModel = { message, photoId, username };
+    const comment: CommentInterface = { message, photoId, username };
 
     const result = await CommentsDb.insertComment(comment);
 

@@ -1,13 +1,13 @@
 import express, { Router } from "express";
 import { UploadedFile } from "express-fileupload";
 import { ObjectId } from "mongodb";
-import { getCollections, UsersDb } from "../database/UsersDb";
+import { UsersDb } from "../database/UsersDb";
 import { addTest } from "../UserData";
 import { getUniqueFilename } from "../utils";
 import multer from "multer";
 import fs, { rm } from "fs";
 import path from "path";
-import PhotoModel from "../models/PhotoModel";
+import PhotoModel, { PhotoInterface } from "../models/PhotoModel";
 import { PhotosDb } from "../database/photosDb";
 import bodyParser from "body-parser";
 import imageToBase64 from "image-to-base64";
@@ -119,7 +119,7 @@ usersRouter.post("/upload", upload.single("image"), async (req, res) => {
     const image = req.file;
 
     if (image) {
-        const upload_img: PhotoModel = {
+        const upload_img: PhotoInterface = {
             username: req.body.username,
             filename: image.filename,
             title: req.body.title,
